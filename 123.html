@@ -1,0 +1,224 @@
+<html>
+<body>
+<?php
+define("LIMIT",2000000);
+define("SQRT_LIMIT",floor(sqrt(LIMIT)));
+	
+$S = str_repeat("\1", LIMIT+1);
+
+$sum = 0;
+
+for($i=2;$i<=SQRT_LIMIT;$i++)
+{
+	if($S[$i]==="\1")
+    {
+      $sum += $i;
+		  for($j=$i*$i; $j<=LIMIT; $j+=$i)
+      {
+			  $S[$j] = "\0";
+		  }
+		}
+	} 
+  
+  echo $sum;
+?>
+
+<!--2 Задание я не имею возможности оформить как библиотеку, поэтому запишу в виде запросов  
+
+CREATE TABLE authors_books(authors_name , book_title);
+
+Для примера закинем в базу данные
+
+INSERT INTO authors_books(authors_name , book_title)
+VALUES ('V.Olifer','Computer Networks');
+INSERT INTO authors_books(authors_name , book_title)
+VALUES ('N.Olifer','Computer Networks');
+
+INSERT INTO authors_books(authors_name , book_title)
+VALUES ('Gerbert Shtild','C# Polnoe Rukovodstvo');
+
+INSERT INTO authors_books(authors_name , book_title)
+VALUES ('Simon Singh','The Simpsons and Their Mathematical Secrets');
+
+
+Запрос для вывода авторов с написанными книгами < 7
+
+SELECT authors_name, COUNT(*) cnt
+FROM authors_books
+GROUP BY authors_name
+HAVING cnt < 7;
+
+
+
+-->
+
+
+
+<?php 
+interface Shape 
+{
+  
+	public function calcArea();
+
+}
+
+
+
+class Circle implements Shape 
+{
+  
+	private $radius;
+  
+  
+	public function __construct($radius)
+	{
+		$this->radius = $radius;
+	}
+  
+	public function calcArea()
+  
+	{
+    
+		return $this -> radius * $this -> radius * pi();
+  
+	}
+
+}
+
+
+
+class Rectangle implements Shape 
+{
+  
+	private $width;
+  	private $height;
+   
+  
+	public function __construct($width, $height)
+ 
+	{
+    
+		$this -> width = $width;
+  		$this -> height = $height;
+  
+	}
+      
+ 
+ 	public function calcArea()
+  
+	{
+    
+		return $this -> width * $this -> height;
+  
+	}
+
+}
+
+
+
+class Triangle implements Shape 
+{
+  
+	private $a;
+  	private $b;
+  	private $c;
+   
+  
+	public function __construct($a, $b , $c)
+  
+	{
+    
+		$this -> a = $a;
+   	 	$this -> b = $b;
+    		$this -> c = $c;
+  
+	}
+      
+  
+	public function calcArea()
+  
+	{
+    
+		$p = (float) (($this -> a + $this -> b + $this -> c) / 2);
+ 
+ 		return  sqrt($p * ($p - $this -> a) * ($p - $this -> b) * ($p - $this -> c));
+  
+	}
+
+}
+
+
+
+$array_shaps = array();
+
+
+
+$json = file_get_contents('./figures.json');
+
+
+$json_data = json_decode($json,true);
+
+
+foreach ($json_data as $value1) 
+{
+	
+	switch($value1)
+  
+	{
+    
+	case "circle":
+      
+		array_push($array_shaps, new Circle($value2 -> radius));
+    
+	case "rectangle":
+      
+		array_push($array_shaps, new Rectangle($value2 -> width, $value2 -> height));
+    
+	case "triangle":
+      
+		array_push($array_shaps, new Triangle($value2 -> a, $value2 -> b, $value2 -> c));
+  
+	}
+
+}
+
+
+
+usort($array_shaps, function($a, $b)
+{
+    
+	return $a->calcArea() < $b->calcArea();
+});
+
+
+
+foreach ($array_shaps as $key => $value2)
+
+{
+   
+ 	echo "{$key} => {$value2} ";
+    
+	switch($value1)
+    
+	{
+      
+		case "circle":
+        
+			echo "Circle, Radius = {$value2->radius}.\n";
+      
+		case "rectangle":
+        
+			echo "Rectangle, Height = {$value2->height} , Width = {$value2->width}.\n";
+      
+		case "triangle":
+        
+			echo "Triangle, A = {$value2->a} , B = {$value2->b} , C = {$value2->c}.\n";
+    
+	}
+
+}
+
+
+?>
+</body>
+</html>
